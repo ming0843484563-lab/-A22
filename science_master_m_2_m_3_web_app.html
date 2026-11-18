@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCIENCE MASTER M.2–M.3 | เว็บแอปเรียนรู้วิทยาศาสตร์ครบวงจร</title>
+    <!-- โหลด Tailwind CSS สำหรับจัดหน้าให้สวยงามและรองรับทุกหน้าจอ -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- โหลด Font Awesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- โหลดฟอนต์ภาษาไทย Sarabun และ Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .formula-font {
+            font-family: 'Inter', monospace;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- ==================== ส่วนหัวของเว็บไซต์ (Header & Navigation) ==================== -->
+    <header class="bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center py-3 gap-3">
+                <!-- โลโก้และชื่อแอป -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white/20 p-2.5 rounded-xl backdrop-blur-sm">
+                        <i class="fa-solid fa-atom text-2xl text-cyan-200 animate-spin-slow"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
+                            SCIENCE MASTER <span class="bg-amber-400 text-slate-900 text-xs px-2 py-0.5 rounded-full font-extrabold">M.2–M.3</span>
+                        </h1>
+                        <p class="text-xs text-blue-100">คลังบทเรียน สูตรคำนวณ แล็บ และผู้ช่วย AI อัจฉริยะ</p>
+                    </div>
+                </div>
+
+                <!-- แถบเมนูนำทางหลัก -->
+                <nav class="flex flex-wrap justify-center gap-1.5 bg-white/10 p-1.5 rounded-2xl backdrop-blur-sm">
+                    <button onclick="switchTab('lessons')" id="nav-lessons" class="nav-btn active px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 bg-white text-indigo-700 shadow-sm">
+                        <i class="fa-solid fa-book-open"></i> บทเรียน 5 หมวด
+                    </button>
+                    <button onclick="switchTab('formulas')" id="nav-formulas" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 text-white hover:bg-white/20">
+                        <i class="fa-solid fa-square-root-variable"></i> สูตร & คำนวณ
+                    </button>
+                    <button onclick="switchTab('ai')" id="nav-ai" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 text-white hover:bg-white/20">
+                        <i class="fa-solid fa-robot"></i> AI ถาม-ตอบ & สแกนโจทย์
+                    </button>
+                    <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 text-white hover:bg-white/20">
+                        <i class="fa-solid fa-clipboard-check"></i> แบบทดสอบ
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== ส่วนค้นหาด่วน (Global Search Bar) ==================== -->
+    <div class="bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+                <!-- ตัวกรองระดับชั้น -->
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <span class="text-sm font-semibold text-slate-600 whitespace-nowrap"><i class="fa-solid fa-filter text-indigo-500 mr-1"></i>ระดับชั้น:</span>
+                    <div class="inline-flex rounded-xl bg-slate-100 p-1 w-full sm:w-auto">
+                        <button onclick="setGradeFilter('ALL')" id="grade-ALL" class="grade-btn flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition">ทั้งหมด</button>
+                        <button onclick="setGradeFilter('M2')" id="grade-M2" class="grade-btn flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">ม.2</button>
+                        <button onclick="setGradeFilter('M3')" id="grade-M3" class="grade-btn flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">ม.3</button>
+                    </div>
+                </div>
+
+                <!-- ช่องค้นหาด้วยชื่อสูตรหรือคำสำคัญ -->
+                <div class="relative w-full sm:w-96">
+                    <input type="text" id="globalSearchInput" onkeyup="handleGlobalSearch()" placeholder="ค้นหาชื่อบทเรียน, สูตร (เช่น กฎของโอห์ม), หรือคำสำคัญ..." class="w-full pl-10 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== พื้นที่แสดงเนื้อหาหลัก (Main Content) ==================== -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- =========================================================================
+             TAB 1: บทเรียน 5 หมวดวิชา (ฟิสิกส์, เคมี, ชีววิทยา, โลกและอวกาศ, เทคโนโลยี)
+             ========================================================================= -->
+        <section id="tab-lessons" class="tab-content space-y-6">
+            <!-- ปุ่มเลือกหมวดหมู่ 5 สาขา -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5" id="category-pills">
+                <button onclick="setCategoryFilter('ALL')" data-cat="ALL" class="cat-pill active bg-indigo-600 text-white p-3 rounded-2xl shadow-sm font-semibold text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-layer-group"></i> ทุกหมวดวิชา
+                </button>
+                <button onclick="setCategoryFilter('physics')" data-cat="physics" class="cat-pill bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 p-3 rounded-2xl shadow-sm font-semibold text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-bolt text-blue-600"></i> 1. ฟิสิกส์
+                </button>
+                <button onclick="setCategoryFilter('chemistry')" data-cat="chemistry" class="cat-pill bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 p-3 rounded-2xl shadow-sm font-semibold text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-flask text-emerald-600"></i> 2. เคมี
+                </button>
+                <button onclick="setCategoryFilter('biology')" data-cat="biology" class="cat-pill bg-white hover:bg-rose-50 text-slate-700 border border-slate-200 p-3 rounded-2xl shadow-sm font-semibold text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-dna text-rose-600"></i> 3. ชีววิทยา
+                </button>
+                <button onclick="setCategoryFilter('earth')" data-cat="earth" class="cat-pill bg-white hover:bg-amber-50 text-slate-700 border border-slate-200 p-3 rounded-2xl shadow-sm font-semibold text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-earth-americas text-amber-600"></i> 4. โลกและอวกาศ
+                </button>
+                <button onclick="setCategoryFilter('tech')" data-cat="tech" class="cat-pill bg-white hover:bg-purple-50 text-slate-700 border border-slate-200 p-3 rounded-2xl shadow-sm font-semibold text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-microchip text-purple-600"></i> 5. เทคโนโลยี
+                </button>
+            </div>
+
+            <!-- รายการการ์ดบทเรียน -->
+            <div id="lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- จะถูกสร้างด้วย JavaScript จากฐานข้อมูลบทเรียน -->
+            </div>
+        </section>
+
+        <!-- =========================================================================
+             TAB 2: คลังสูตรสมการ & เครื่องคำนวณแสดงวิธีทำทีละขั้นตอน
+             ========================================================================= -->
+        <section id="tab-formulas" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- คอลัมน์ซ้าย: ฐานข้อมูลสูตรและตัวอย่างโจทย์ -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                            <i class="fa-solid fa-book-bookmark text-indigo-600"></i> ฐานข้อมูลสูตรและสมการ (ม.2–ม.3)
+                        </h2>
+                        <p class="text-xs text-slate-500 mb-4">คลิกที่ปุ่ม "ทดลองคำนวณ" เพื่อส่งสูตรไปยังเครื่องคำนวณทีละขั้นตอนด้านขวา</p>
+                        
+                        <div id="formulas-list" class="space-y-3 max-h-[650px] overflow-y-auto pr-1">
+                            <!-- รายการสูตรจะถูกสร้างด้วย JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- คอลัมน์ขวา: เครื่องคำนวณแสดงวิธีทำทีละขั้นตอน (Step-by-Step Solver) -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-indigo-100 sticky top-24">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                            <h2 class="text-lg font-bold text-indigo-700 flex items-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> เครื่องคำนวณแสดงวิธีทำ
+                            </h2>
+                            <span class="text-xs bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full font-semibold">Step-by-Step</span>
+                        </div>
+
+                        <!-- เลือกสูตรที่ต้องการคำนวณ -->
+                        <div class="mb-4">
+                            <label class="block text-xs font-bold text-slate-600 mb-1.5">เลือกสูตรที่ต้องการคำนวณ:</label>
+                            <select id="calc-formula-select" onchange="renderCalculatorInputs()" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                <!-- Options populated by JS -->
+                            </select>
+                        </div>
+
+                        <!-- ช่องกรอกค่าตัวแปร -->
+                        <div id="calc-inputs-container" class="space-y-3 mb-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <!-- Dynamic inputs -->
+                        </div>
+
+                        <button onclick="executeStepByStepCalculation()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play"></i> คำนวณและแสดงวิธีทำทีละขั้นตอน
+                        </button>
+
+                        <!-- พื้นที่แสดงผลลัพธ์และวิธีทำทีละขั้นตอน -->
+                        <div id="calc-result-box" class="hidden mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2 text-sm">
+                            <!-- Step-by-step output -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================================
+             TAB 3: ระบบ AI ถาม-ตอบบทเรียน & ถ่ายรูปโจทย์เพื่อวิเคราะห์
+             ========================================================================= -->
+        <section id="tab-ai" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- ส่วนอัปโหลดรูปภาพโจทย์ / คำถามด่วน -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-800 flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-camera text-indigo-600"></i> ถ่ายรูป / อัปโหลดโจทย์เพื่อวิเคราะห์
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-3">รองรับภาพถ่ายโจทย์ฟิสิกส์ เคมี สมการ หรือแผนภาพวิทยาศาสตร์ AI จะช่วยแกะโจทย์และเฉลยอย่างละเอียด</p>
+                        
+                        <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-indigo-300 rounded-2xl cursor-pointer bg-indigo-50/50 hover:bg-indigo-50 transition relative overflow-hidden">
+                            <div id="image-upload-placeholder" class="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
+                                <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-500 mb-2"></i>
+                                <p class="text-xs font-semibold text-indigo-700">คลิกเพื่อถ่ายรูป หรือเลือกไฟล์ภาพโจทย์</p>
+                                <p class="text-[11px] text-slate-400 mt-1">PNG, JPG, WEBP</p>
+                            </div>
+                            <img id="image-preview" class="hidden w-full h-full object-contain bg-slate-900" alt="ตัวอย่างภาพโจทย์">
+                            <input id="problem-image-input" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
+                        </label>
+
+                        <div id="image-actions" class="hidden mt-3 flex gap-2">
+                            <button onclick="clearUploadedImage()" class="flex-1 py-2 px-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition">
+                                <i class="fa-solid fa-trash mr-1"></i> ลบรูป
+                            </button>
+                            <button onclick="analyzeImageWithAI()" class="flex-2 py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow transition">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> วิเคราะห์โจทย์ในภาพ
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ตัวอย่างคำถามยอดฮิต -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i> ตัวอย่างคำถามที่ถาม AI ได้
+                        </h3>
+                        <div class="space-y-2">
+                            <button onclick="askQuickQuestion('สรุปความแตกต่างระหว่างการแบ่งเซลล์แบบ Mitosis และ Meiosis ม.3 พร้อมตารางเปรียบเทียบ')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-indigo-50 text-xs text-slate-700 hover:text-indigo-700 border border-slate-200 transition">
+                                "สรุปความแตกต่าง Mitosis และ Meiosis ม.3"
+                            </button>
+                            <button onclick="askQuickQuestion('อธิบายวิธีคำนวณค่าไฟฟ้าภายในบ้าน ม.3 พร้อมยกตัวอย่างโจทย์ 1 ข้อ')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-indigo-50 text-xs text-slate-700 hover:text-indigo-700 border border-slate-200 transition">
+                                "อธิบายวิธีคำนวณค่าไฟฟ้าภายในบ้าน ม.3"
+                            </button>
+                            <button onclick="askQuickQuestion('หลักการออกแบบเชิงวิศวกรรม 6 ขั้นตอน ในวิชาเทคโนโลยี ม.2-ม.3 มีอะไรบ้าง')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-indigo-50 text-xs text-slate-700 hover:text-indigo-700 border border-slate-200 transition">
+                                "กระบวนการออกแบบเชิงวิศวกรรม 6 ขั้นตอน"
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- กล่องแชทโต้ตอบกับ AI ติวเตอร์วิทยาศาสตร์ -->
+                <div class="lg:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200 flex flex-col h-[620px]">
+                    <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 rounded-t-2xl">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm">AI ติวเตอร์ SCIENCE MASTER (ม.2–ม.3)</h3>
+                                <p class="text-xs text-emerald-600 font-medium"><i class="fa-solid fa-circle text-[8px] mr-1"></i>พร้อมตอบคำถามจากฐานข้อมูลบทเรียนและวิเคราะห์โจทย์</p>
+                            </div>
+                        </div>
+                        <button onclick="resetChat()" class="text-xs text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 bg-white">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> ล้างแชท
+                        </button>
+                    </div>
+
+                    <!-- พื้นที่ข้อความแชท -->
+                    <div id="ai-chat-messages" class="flex-grow p-4 overflow-y-auto space-y-4 bg-slate-50/30">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 text-xs">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-3.5 text-sm text-slate-700 shadow-sm max-w-[85%]">
+                                สวัสดีครับ! ผมคือผู้ช่วย AI ประจำโปรแกรม <strong>SCIENCE MASTER M.2–M.3</strong> 🧪⚡<br><br>
+                                น้องๆ สามารถพิมพ์ถามข้อสงสัยได้ทุกบทเรียน (ฟิสิกส์ เคมี ชีววิทยา โลกและอวกาศ เทคโนโลยี) ขอให้ช่วยอธิบายสูตร หรืออัปโหลดภาพถ่ายโจทย์ด้านซ้ายมือเพื่อให้ผมช่วยแสดงวิธีทำทีละขั้นตอนได้เลยครับ!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ช่องพิมพ์ข้อความถาม AI -->
+                    <div class="p-3 border-t border-slate-200 bg-white rounded-b-2xl">
+                        <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
+                            <input type="text" id="ai-chat-input" placeholder="พิมพ์คำถามวิทยาศาสตร์ หรือวางโจทย์ที่ต้องการให้ช่วยแก้..." class="flex-grow px-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">
+                            <button type="submit" id="ai-send-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow transition flex items-center gap-2">
+                                <span>ส่ง</span> <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================================
+             TAB 4: แบบทดสอบพร้อมตรวจคะแนน (Interactive Assessment Quiz)
+             ========================================================================= -->
+        <section id="tab-quiz" class="tab-content hidden max-w-4xl mx-auto">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-award text-amber-500"></i> แบบทดสอบวัดระดับความรู้ SCIENCE MASTER
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">เลือกทำแบบทดสอบแยกตามระดับชั้นหรือทำรวมทั้งหมด พร้อมตรวจคะแนนและเฉลยละเอียดทันที</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="quiz-filter-select" onchange="initQuiz()" class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700">
+                            <option value="ALL">รวมข้อสอบ ม.2 และ ม.3 (10 ข้อ)</option>
+                            <option value="M2">เฉพาะระดับชั้น ม.2 (5 ข้อ)</option>
+                            <option value="M3">เฉพาะระดับชั้น ม.3 (5 ข้อ)</option>
+                        </select>
+                        <button onclick="initQuiz()" class="px-3 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-shuffle mr-1"></i> เริ่มใหม่
+                        </button>
+                    </div>
+                </div>
+
+                <!-- แถบแสดงคะแนนเมื่อส่งคำตอบ -->
+                <div id="quiz-score-banner" class="hidden mb-6 p-5 rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold">ผลการทดสอบของคุณ</h3>
+                        <p id="quiz-feedback-text" class="text-sm text-blue-100">ยอดเยี่ยมมาก! ตรวจสอบเฉลยละเอียดแต่ละข้อได้ด้านล่าง</p>
+                    </div>
+                    <div class="bg-white text-indigo-700 px-6 py-3 rounded-2xl font-extrabold text-2xl shadow">
+                        <span id="quiz-score-number">0</span> / <span id="quiz-total-number">0</span>
+                    </div>
+                </div>
+
+                <!-- รายการคำถาม -->
+                <div id="quiz-questions-container" class="space-y-6">
+                    <!-- Quiz items populated by JS -->
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-slate-100 flex justify-end">
+                    <button id="submit-quiz-btn" onclick="gradeQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-check-double"></i> ส่งคำตอบและตรวจคะแนน
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== Modal แสดงรายละเอียดบทเรียนและตัวอย่างโจทย์ ==================== -->
+    <div id="lesson-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col animate-fade-in">
+            <div id="modal-header" class="p-5 bg-indigo-600 text-white flex justify-between items-start">
+                <div>
+                    <span id="modal-badge" class="text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-semibold">ม.2 | ฟิสิกส์</span>
+                    <h3 id="modal-title" class="text-xl font-bold mt-1">ชื่อบทเรียน</h3>
+                </div>
+                <button onclick="closeLessonModal()" class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modal-body" class="p-6 overflow-y-auto space-y-5 text-sm text-slate-700">
+                <!-- รายละเอียดเนื้อหา + ตัวอย่างโจทย์พร้อมเฉลย -->
+            </div>
+            <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between items-center">
+                <button onclick="askAIAboutCurrentLesson()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-robot"></i> ถาม AI เพิ่มเติมเกี่ยวกับบทเรียนนี้
+                </button>
+                <button onclick="closeLessonModal()" class="px-5 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900 transition">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== กล่องแจ้งเตือน (Custom Message Box แทน alert) ==================== -->
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl text-sm font-medium flex items-center gap-2.5 transition-all">
+        <i class="fa-solid fa-circle-info text-cyan-400"></i>
+        <span id="toast-message">ข้อความแจ้งเตือน</span>
+    </div>
+
+    <!-- ==================== ส่วนท้ายเว็บไซต์ (Footer) ==================== -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            <strong>SCIENCE MASTER M.2–M.3</strong> • ครอบคลุมหลักสูตรแกนกลางวิทยาศาสตร์และเทคโนโลยี (ฟิสิกส์ เคมี ชีววิทยา โลกและอวกาศ เทคโนโลยี) • เปิดใช้งานได้ทันทีบน Google Chrome
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT ฐานข้อมูลและระบบการทำงานทั้งหมด ==================== -->
+    <script>
+        // 1. ฐานข้อมูลบทเรียนครบทั้ง 5 หมวด (ม.2 และ ม.3) พร้อมตัวอย่างโจทย์และเฉลย
+        const lessonsDatabase = [
+            // --- 1. ฟิสิกส์ ---
+            {
+                id: 'PHY_M2_1', grade: 'M2', category: 'physics', catName: 'ฟิสิกส์',
+                title: 'แรงและการเคลื่อนที่ (Forces & Motion)',
+                summary: 'แรงลัพธ์ แรงเสียดทาน ความดันในของเหลว แรงพยุงของอาร์คิมิดีส ระยะทาง การกระจัด อัตราเร็ว และความเร็ว',
+                topics: [
+                    'การหาแรงลัพธ์แบบเวกเตอร์ (ทิศเดียวกันนำมาบวก ทิศตรงข้ามนำมาลบ)',
+                    'แรงเสียดทานสถิต (วัตถุหยุดนิ่ง) และแรงเสียดทานจลน์ (วัตถุกำลังเคลื่อนที่)',
+                    'ความดันของของเหลว (P = ρgh) แปรผันตรงกับความลึกและความหนาแน่น',
+                    'แรงพยุง (F_B = ρ_เหลว V_จม g) หลักการจมและการลอยของวัตถุ'
+                ],
+                exampleProblem: {
+                    question: 'วัตถุชิ้นหนึ่งมีปริมาตรส่วนที่จมในน้ำ 0.005 m³ (กำหนดความหนาแน่นน้ำ = 1,000 kg/m³ และ g = 10 m/s²) จงหาแรงพยุงที่น้ำกระทำต่อวัตถุ',
+                    solution: 'วิธีทำ:\n1. ระบุตัวแปร: ρ = 1,000 kg/m³, V_จม = 0.005 m³, g = 10 m/s²\n2. ใช้สูตรแรงพยุง: F_B = ρ × V_จม × g\n3. แทนค่า: F_B = 1,000 × 0.005 × 10 = 50 นิวตัน (N)'
+                }
+            },
+            {
+                id: 'PHY_M2_2', grade: 'M2', category: 'physics', catName: 'ฟิสิกส์',
+                title: 'งานและพลังงาน (Work & Energy)',
+                summary: 'งานทางวิทยาศาสตร์ กำลัง เครื่องกลอย่างง่าย 6 ชนิด พลังงานจลน์ พลังงานศักย์โน้มถ่วง และกฎการอนุรักษ์พลังงาน',
+                topics: [
+                    'งาน (W = F·s) เกิดขึ้นเมื่อออกแรงแล้ววัตถุเคลื่อนที่ตามแนวแรง',
+                    'กำลัง (P = W/t) คืออัตราการทำงานในหนึ่งหน่วยเวลา (หน่วยวัตต์)',
+                    'เครื่องกลอย่างง่าย: คาน รอก พื้นเอียง ลิ่ม สกรู ล้อและเพลา',
+                    'พลังงานกลรวม (E_รวม = E_k + E_p) มีค่าคงที่เสมอเมื่อไม่มีแรงเสียดทาน'
+                ],
+                exampleProblem: {
+                    question: 'ออกแรง 40 นิวตัน ดันกล่องให้เคลื่อนที่ไปตามแนวราบได้ระยะทาง 5 เมตร ภายในเวลา 4 วินาที จงหางานและกำลังที่ใช้',
+                    solution: 'วิธีทำ:\n1. หางานจากสูตร W = F × s = 40 × 5 = 200 จูล (J)\n2. หากำลังจากสูตร P = W / t = 200 / 4 = 50 วัตต์ (W)'
+                }
+            },
+            {
+                id: 'PHY_M3_1', grade: 'M3', category: 'physics', catName: 'ฟิสิกส์',
+                title: 'ไฟฟ้าและอิเล็กทรอนิกส์ (Electricity)',
+                summary: 'กฎของโอห์ม วงจรอนุกรมและขนาน ชิ้นส่วนอิเล็กทรอนิกส์ กำลังไฟฟ้า และการคำนวณค่าไฟฟ้าภายในบ้าน',
+                topics: [
+                    'กฎของโอห์ม: V = IR (ความต่างศักย์ = กระแสไฟฟ้า × ความต้านทาน)',
+                    'วงจรอนุกรม: I เท่ากันทั้งวงจร, R_รวม = R₁ + R₂ | วงจรขนาน: V เท่ากัน, 1/R_รวม = 1/R₁ + 1/R₂',
+                    'อุปกรณ์อิเล็กทรอนิกส์: ตัวต้านทาน ไดโอด (ยอมให้กระแสไหลทางเดียว) ทรานซิสเตอร์ ตัวเก็บประจุ',
+                    'การคิดค่าไฟฟ้า: หน่วย (Unit) = (กำลังไฟฟ้าวัตต์ / 1000) × จำนวนชั่วโมง'
+                ],
+                exampleProblem: {
+                    question: 'เตารีดไฟฟ้าขนาด 2,000 วัตต์ เปิดใช้งานวันละ 1.5 ชั่วโมง เป็นเวลา 20 วัน ค่าไฟหน่วยละ 4 บาท ต้องจ่ายค่าไฟเท่าใด',
+                    solution: 'วิธีทำ:\n1. เปลี่ยนวัตต์เป็นกิโลวัตต์: 2,000 / 1,000 = 2 kW\n2. หาจำนวนชั่วโมงทั้งหมด: 1.5 ชม. × 20 วัน = 30 ชั่วโมง\n3. หาจำนวนหน่วยไฟฟ้า: 2 kW × 30 ชม. = 60 หน่วย\n4. คิดเป็นเงิน: 60 × 4 = 240 บาท'
+                }
+            },
+            {
+                id: 'PHY_M3_2', grade: 'M3', category: 'physics', catName: 'ฟิสิกส์',
+                title: 'คลื่นและแสง (Waves & Light)',
+                summary: 'ส่วนประกอบและอัตราเร็วคลื่น คลื่นแม่เหล็กไฟฟ้า การสะท้อน การหักเหของแสง กระจกโค้ง และเลนส์บาง',
+                topics: [
+                    'สมการคลื่น: v = fλ (อัตราเร็ว = ความถี่ × ความยาวคลื่น)',
+                    'สเปกตรัมคลื่นแม่เหล็กไฟฟ้า: วิทยุ ไมโครเวฟ อินฟราเรด แสงที่ตามองเห็น UV รังสีเอกซ์ แกมมา',
+                    'กฎการสะท้อน: มุมตกกระทบ = มุมสะท้อน และอยู่บนระนาบเดียวกัน',
+                    'สมการเลนส์และกระจกโค้ง: 1/f = 1/s + 1/s\' และกำลังขยาย m = s\'/s'
+                ],
+                exampleProblem: {
+                    question: 'คลื่นน้ำขบวนหนึ่งมีความถี่ 10 เฮิรตซ์ (Hz) และมีความยาวคลื่น 0.4 เมตร จงหาอัตราเร็วของคลื่นน้ำนี้',
+                    solution: 'วิธีทำ:\n1. จากสูตร v = f × λ\n2. แทนค่า f = 10 Hz, λ = 0.4 m\n3. v = 10 × 0.4 = 4 เมตรต่อวินาที (m/s)'
+                }
+            },
+
+            // --- 2. เคมี ---
+            {
+                id: 'CHM_M2_1', grade: 'M2', category: 'chemistry', catName: 'เคมี',
+                title: 'สารละลายและการแยกสาร (Solutions & Separation)',
+                summary: 'องค์ประกอบสารละลาย ความเข้มข้นร้อยละ สภาพละลายได้ และเทคนิคการแยกสารผสม 5 วิธีหลัก',
+                topics: [
+                    'สารที่มีปริมาณมากและสถานะเดียวกับสารละลายคือ ตัวทำละลาย (Solvent)',
+                    'ความเข้มข้น: ร้อยละโดยมวล (%w/w), ร้อยละโดยปริมาตร (%v/v), ร้อยละโดยมวลต่อปริมาตร (%w/v)',
+                    'การแยกสาร: การระเหยแห้ง, การตกผลึก, การกลั่นอย่างง่าย, โครมาโทกราฟี, การสกัดด้วยตัวทำละลาย'
+                ],
+                exampleProblem: {
+                    question: 'ละลายเกลือแกง 25 กรัม ในน้ำกลั่นจนได้สารละลายทั้งหมด 250 กรัม สารละลายนี้มีความเข้มข้นร้อยละโดยมวลเท่าใด',
+                    solution: 'วิธีทำ:\n1. สูตร %w/w = (มวลตัวละลาย / มวลสารละลาย) × 100\n2. แทนค่า: (25 / 250) × 100 = 10% โดยมวล (%w/w)'
+                }
+            },
+            {
+                id: 'CHM_M3_1', grade: 'M3', category: 'chemistry', catName: 'เคมี',
+                title: 'สาร สมบัติของสาร และปฏิกิริยาเคมี (Chemical Reactions)',
+                summary: 'การเปลี่ยนแปลงทางเคมี กฎทรงมวล ปฏิกิริยาดูด-คายความร้อน กรด-เบส การเกิดสนิม และพอลิเมอร์',
+                topics: [
+                    'กฎทรงมวล: มวลรวมของสารตั้งต้น = มวลรวมของผลิตภัณฑ์ ในระบบปิด',
+                    'ปฏิกิริยาคายความร้อน (อุณหภูมิสิ่งแวดล้อมสูงขึ้น) vs ดูดความร้อน (อุณหภูมิลดลง)',
+                    'ปฏิกิริยากรด + เบส → เกลือ + น้ำ (ปฏิกิริยาสะเทิน)',
+                    'วัสดุในชีวิตประจำวัน: พอลิเมอร์ (เทอร์มอพลาสติก vs เทอร์มอเซต), เซรามิก, วัสดุผสม'
+                ],
+                exampleProblem: {
+                    question: 'เผาแคลเซียมคาร์บอเนต (CaCO₃) 100 กรัม ในระบบปิด ได้แคลเซียมออกไซด์ (CaO) 56 กรัม และแก๊สคาร์บอนไดออกไซด์ (CO₂) แก๊ส CO₂ ที่เกิดขึ้นมีมวลกี่กรัม',
+                    solution: 'วิธีทำ:\n1. ตามกฎทรงมวล: มวลสารตั้งต้น = มวลผลิตภัณฑ์รวม\n2. 100 g = 56 g + มวลของ CO₂\n3. มวลของ CO₂ = 100 - 56 = 44 กรัม'
+                }
+            },
+
+            // --- 3. ชีววิทยา ---
+            {
+                id: 'BIO_M2_1', grade: 'M2', category: 'biology', catName: 'ชีววิทยา',
+                title: 'ระบบในร่างกายมนุษย์ (Human Body Systems)',
+                summary: 'กลไกการทำงานของระบบหายใจ ระบบขับถ่าย ระบบหมุนเวียนเลือด ระบบประสาท และระบบสืบพันธุ์',
+                topics: [
+                    'ระบบหายใจ: การแลกเปลี่ยนแก๊ส O₂ และ CO₂ เกิดขึ้นที่ถุงลมปอด (Alveoli) ด้วยวิธีการแพร่',
+                    'ระบบขับถ่าย: หน่วยไต (Nephron) ทำหน้าที่กรอง ดูดกลับสารที่มีประโยชน์ และหลั่งของเสีย',
+                    'ระบบหมุนเวียนเลือด: หัวใจห้องล่างซ้ายมีผนังหนาที่สุดเพื่อสูบฉีดเลือดแดงไปเลี้ยงทั่วร่างกาย',
+                    'ระบบประสาท: สมอง ไขสันหลัง และปฏิกิริยารีเฟล็กซ์ (Reflex Action) ที่สั่งการโดยไขสันหลัง'
+                ],
+                exampleProblem: {
+                    question: 'ขณะหายใจเข้า กล้ามเนื้อกระบังลมและกระดูกซี่โครงมีการเปลี่ยนแปลงอย่างไร',
+                    solution: 'เฉลย:\nขณะหายใจเข้า กล้ามเนื้อกระบังลมจะหดตัวและเลื่อนต่ำลง ส่วนกล้ามเนื้อยึดกระดูกซี่โครงแถบนอกหดตัวทำให้กระดูกซี่โครงยกตัวสูงขึ้น ส่งผลให้ปริมาตรช่องอกเพิ่มขึ้นและความดันอากาศในปอดลดลง อากาศภายนอกจึงไหลเข้าสู่ปอด'
+                }
+            },
+            {
+                id: 'BIO_M3_1', grade: 'M3', category: 'biology', catName: 'ชีววิทยา',
+                title: 'เซลล์ พันธุกรรม และระบบนิเวศ (Cells, Genetics & Ecology)',
+                summary: 'การแบ่งเซลล์ Mitosis/Meiosis กฎของเมนเดล โรคทางพันธุกรรม ความสัมพันธ์ในระบบนิเวศ และการถ่ายทอดพลังงาน',
+                topics: [
+                    'การแบ่งเซลล์: Mitosis (เซลล์ร่างกาย ได้ 2 เซลล์ โครโมโซมเท่าเดิม) vs Meiosis (เซลล์สืบพันธุ์ ได้ 4 เซลล์ โครโมโซมลดลงครึ่งหนึ่ง)',
+                    'พันธุศาสตร์เมนเดล: ลักษณะเด่น (Dominant) ข่มลักษณะด้อย (Recessive), การใช้ตารางพันเนตต์',
+                    'ระบบนิเวศ: ผู้ผลิต ผู้บริโภค ผู้ย่อยสลาย และกฎ 10% ในการถ่ายทอดพลังงานในโซ่อาหาร'
+                ],
+                exampleProblem: {
+                    question: 'ถั่วลันเตาต้นสูงพันธุ์ทาง (Tt) ผสมกับต้นสูงพันธุ์ทาง (Tt) โอกาสที่จะได้ลูกต้นเตี้ย (tt) คิดเป็นร้อยละเท่าใด',
+                    solution: 'วิธีทำ:\n1. เขียนตารางพันเนตต์ระหว่าง Tt × Tt จะได้จีโนไทป์ 4 แบบคือ: TT, Tt, Tt, tt\n2. ลูกต้นเตี้ย (tt) มี 1 ส่วน จากทั้งหมด 4 ส่วน\n3. คิดเป็นร้อยละ = (1/4) × 100 = ร้อยละ 25'
+                }
+            },
+
+            // --- 4. โลกและอวกาศ ---
+            {
+                id: 'EAR_M2_1', grade: 'M2', category: 'earth', catName: 'โลกและอวกาศ',
+                title: 'โครงสร้างโลก ทรัพยากรธรณี และภัยพิบัติ (Earth & Geohazards)',
+                summary: 'ชั้นโครงสร้างโลก เชื้อเพลิงซากดึกดำบรรพ์ ชั้นหน้าตัดดิน แหล่งน้ำ และการป้องกันภัยพิบัติทางธรรมชาติ',
+                topics: [
+                    'โครงสร้างโลกแบ่งตามองค์ประกอบทางเคมี: เปลือกโลก (Crust), เนื้อโลก (Mantle), แก่นโลก (Core)',
+                    'เชื้อเพลิงซากดึกดำบรรพ์: ถ่านหิน หินน้ำมัน ปิโตรเลียม (แก๊สธรรมชาติและน้ำมันดิบ)',
+                    'ชั้นหน้าตัดดิน (Soil Horizon): ชั้น O (อินทรียวัตถุ), ชั้น A (ดินชั้นบน), ชั้น B (ดินชั้นล่าง), ชั้น C, ชั้น R (หินพื้น)'
+                ],
+                exampleProblem: {
+                    question: 'ชั้นดินใดที่มีธาตุอาหารและฮิวมัสอุดมสมบูรณ์ที่สุด เหมาะแก่การเจริญเติบโตของพืช',
+                    solution: 'เฉลย:\nดินชั้นบน (Horizon A) เพราะมีซากพืชซากสัตว์ที่ย่อยสลายกลายเป็นฮิวมัสสะสมอยู่มาก ทำให้ดินมีสีคล้ำ ร่วนซุย และอุดมไปด้วยแร่ธาตุ'
+                }
+            },
+            {
+                id: 'EAR_M3_1', grade: 'M3', category: 'earth', catName: 'โลกและอวกาศ',
+                title: 'บรรยากาศ ภูมิอากาศ และดาราศาสตร์ (Atmosphere & Astronomy)',
+                summary: 'ชั้นบรรยากาศของโลก การเปลี่ยนแปลงภูมิอากาศ ปฏิสัมพันธ์ดวงอาทิตย์-โลก-ดวงจันทร์ และเทคโนโลยีอวกาศ',
+                topics: [
+                    'ชั้นบรรยากาศ: โทรโพสเฟียร์ (เกิดเมฆฝน), สตราโตสเฟียร์ (มีชั้นโอโซน), มีโซสเฟียร์ (เผาไหม้อุกกาบาต), เทอร์โมสเฟียร์, เอกโซสเฟียร์',
+                    'ปรากฏการณ์ดาราศาสตร์: ฤดูกาล (แกนโลกเอียง 23.5°), ข้างขึ้นข้างแรม, น้ำขึ้นน้ำลง, อุปราคา',
+                    'เทคโนโลยีอวกาศ: กล้องโทรทรรศน์ ดาวเทียมวงโคจรค้างฟ้า (GEO) สถานีอวกาศนานาชาติ (ISS)'
+                ],
+                exampleProblem: {
+                    question: 'เหตุใดประเทศไทยจึงมีช่วงเวลากลางวันยาวนานกว่ากลางคืนมากที่สุดในรอบปีช่วงวันที่ 21 มิถุนายน (ครีษมายัน)',
+                    solution: 'เฉลย:\nเนื่องจากแกนหมุนของโลกเอียงทำมุม 23.5 องศา กับแนวตั้งฉากของระนาบวงโคจร ทำให้ในวันที่ 21 มิถุนายน ขั้วโลกเหนือหันเข้าหาดวงอาทิตย์มากที่สุด ซีกโลกเหนือ (รวมถึงประเทศไทย) จึงได้รับแสงอาทิตย์นานที่สุดในรอบปี'
+                }
+            },
+
+            // --- 5. เทคโนโลยี ---
+            {
+                id: 'TEC_M2_1', grade: 'M2', category: 'tech', catName: 'เทคโนโลยี',
+                title: 'การออกแบบเชิงวิศวกรรมและวัสดุ (Engineering Design & Materials)',
+                summary: 'กระบวนการออกแบบเชิงวิศวกรรม 6 ขั้นตอน การเลือกใช้วัสดุ เครื่องมือช่างพื้นฐาน และกลไกไฟฟ้า-อิเล็กทรอนิกส์',
+                topics: [
+                    '6 ขั้นตอนออกแบบเชิงวิศวกรรม: 1.ระบุปัญหา 2.รวบรวมข้อมูล 3.ออกแบบวิธีการ 4.วางแผนและดำเนินการ 5.ทดสอบประเมินผล 6.นำเสนอ',
+                    'สมบัติของวัสดุ: ความแข็ง ความเหนียว สภาพยืดหยุ่น การนำความร้อน และการนำไฟฟ้า',
+                    'การวิเคราะห์ระบบทางเทคโนโลยี: ตัวป้อน (Input) → กระบวนการ (Process) → ผลผลิต (Output) และข้อมูลย้อนกลับ (Feedback)'
+                ],
+                exampleProblem: {
+                    question: 'ในการพัฒนาระบบรดน้ำต้นไม้อัตโนมัติ เมื่อเซนเซอร์วัดความชื้นในดินตรวจพบว่าดินแห้ง ระบบจะสั่งให้ปั๊มน้ำทำงาน เซนเซอร์ความชื้นจัดเป็นส่วนใดของระบบทางเทคโนโลยี',
+                    solution: 'เฉลย:\nจัดเป็น "ข้อมูลย้อนกลับ (Feedback)" และ "ตัวป้อน (Input)" ที่ส่งสัญญาณกลับไปควบคุมการทำงานของระบบ (Process) ให้เปิดหรือปิดปั๊มน้ำโดยอัตโนมัติ'
+                }
+            },
+            {
+                id: 'TEC_M3_1', grade: 'M3', category: 'tech', catName: 'เทคโนโลยี',
+                title: 'อัลกอริทึม การเขียนโปรแกรม และข้อมูลสารสนเทศ (Coding & Data)',
+                summary: 'การคิดเชิงคำนวณ ผังงาน (Flowchart) การเขียนโปรแกรมควบคุม การประมวลผลข้อมูล และความปลอดภัยไซเบอร์',
+                topics: [
+                    'แนวคิดเชิงคำนวณ (Computational Thinking): แบ่งย่อยปัญหา, หารูปแบบ, คิดเชิงนามธรรม, ออกแบบอัลกอริทึม',
+                    'โครงสร้างการเขียนโปรแกรม: แบบลำดับ (Sequence), แบบมีทางเลือก (Selection: if-else), แบบทำซ้ำ (Loop: for/while)',
+                    'วิทยาการข้อมูล (Data Science): การเก็บรวบรวมข้อมูล การทำความสะอาดข้อมูล (Data Cleansing) และการทำภาพแทนข้อมูล (Visualization)'
+                ],
+                exampleProblem: {
+                    question: 'หากต้องการเขียนโปรแกรมตรวจสอบคะแนนสอบ (score) ถ้านักเรียนได้คะแนนตั้งแต่ 50 คะแนนขึ้นไปให้แสดงคำว่า "ผ่าน" ถ้าน้อยกว่าให้แสดง "ไม่ผ่าน" ควรใช้โครงสร้างควบคุมแบบใด',
+                    solution: 'เฉลย:\nใช้โครงสร้างแบบมีทางเลือก (Selection / Condition) ด้วยคำสั่ง if-else:\nif score >= 50:\n    print("ผ่าน")\nelse:\n    print("ไม่ผ่าน")'
+                }
+            }
+        ];
+
+        // 2. ฐานข้อมูลสูตรและสมการพร้อมโครงสร้างตัวแปรสำหรับเครื่องคำนวณทีละขั้นตอน
+        const formulasDatabase = [
+            {
+                id: 'F_OHM', grade: 'M3', category: 'ฟิสิกส์ (ไฟฟ้า)',
+                name: 'กฎของโอห์ม (หาความต่างศักย์ไฟฟ้า V)',
+                formulaText: 'V = I × R',
+                description: 'ความต่างศักย์ไฟฟ้า (Volt) เท่ากับผลคูณของกระแสไฟฟ้า (Ampere) และความต้านทาน (Ohm)',
+                inputs: [
+                    { key: 'I', label: 'กระแสไฟฟ้า (I)', unit: 'แอมแปร์ (A)', placeholder: 'เช่น 2' },
+                    { key: 'R', label: 'ความต้านทาน (R)', unit: 'โอห์ม (Ω)', placeholder: 'เช่น 12' }
+                ],
+                solve: (vals) => {
+                    const V = vals.I * vals.R;
+                    return [
+                        `<strong>ขั้นที่ 1 ระบุข้อมูลจากโจทย์:</strong> กระแสไฟฟ้า (I) = ${vals.I} A, ความต้านทาน (R) = ${vals.R} Ω`,
+                        `<strong>ขั้นที่ 2 เลือกใช้สมการ:</strong> V = I × R`,
+                        `<strong>ขั้นที่ 3 แทนค่าลงในสมการ:</strong> V = ${vals.I} × ${vals.R}`,
+                        `<strong>ขั้นที่ 4 คำนวณคำตอบ:</strong> ความต่างศักย์ไฟฟ้า (V) = <span class="text-lg font-extrabold text-indigo-700">${V.toLocaleString()} โวลต์ (V)</span>`
+                    ];
+                }
+            },
+            {
+                id: 'F_ELEC_BILL', grade: 'M3', category: 'ฟิสิกส์ (ไฟฟ้า)',
+                name: 'การคำนวณหน่วยไฟฟ้าและค่าไฟฟ้า',
+                formulaText: 'Unit = (P / 1000) × t',
+                description: 'คำนวณจำนวนหน่วยไฟฟ้า (kWh) และค่าไฟฟ้าทั้งหมดจากกำลังไฟฟ้า (วัตต์) และเวลาใช้งาน',
+                inputs: [
+                    { key: 'P', label: 'กำลังไฟฟ้าเครื่องใช้ไฟฟ้า (P)', unit: 'วัตต์ (W)', placeholder: 'เช่น 1500' },
+                    { key: 't', label: 'ระยะเวลาใช้งานรวม (t)', unit: 'ชั่วโมง (hr)', placeholder: 'เช่น 240' },
+                    { key: 'rate', label: 'อัตราค่าไฟฟ้าต่อหน่วย', unit: 'บาท/หน่วย', placeholder: 'เช่น 4' }
+                ],
+                solve: (vals) => {
+                    const kW = vals.P / 1000;
+                    const units = kW * vals.t;
+                    const cost = units * vals.rate;
+                    return [
+                        `<strong>ขั้นที่ 1 แปลงหน่วยกำลังไฟฟ้าเป็นกิโลวัตต์:</strong> ${vals.P} W ÷ 1,000 = ${kW} kW`,
+                        `<strong>ขั้นที่ 2 คำนวณจำนวนหน่วยไฟฟ้า (Unit):</strong> ${kW} kW × ${vals.t} ชั่วโมง = ${units.toLocaleString()} หน่วย`,
+                        `<strong>ขั้นที่ 3 คำนวณค่าไฟฟ้าทั้งหมด:</strong> ${units.toLocaleString()} หน่วย × ${vals.rate} บาท = <span class="text-lg font-extrabold text-indigo-700">${cost.toLocaleString()} บาท</span>`
+                    ];
+                }
+            },
+            {
+                id: 'F_WORK', grade: 'M2', category: 'ฟิสิกส์ (งานและพลังงาน)',
+                name: 'งานทางวิทยาศาสตร์ (Work)',
+                formulaText: 'W = F × s',
+                description: 'งาน (Joule) เกิดจากแรงที่กระทำต่อวัตถุ (Newton) คูณกับระยะทางที่วัตถุเคลื่อนที่ตามแนวแรง (Meter)',
+                inputs: [
+                    { key: 'F', label: 'ขนาดของแรงที่กระทำ (F)', unit: 'นิวตัน (N)', placeholder: 'เช่น 50' },
+                    { key: 's', label: 'ระยะทางที่วัตถุเคลื่อนที่ตามแนวแรง (s)', unit: 'เมตร (m)', placeholder: 'เช่น 8' }
+                ],
+                solve: (vals) => {
+                    const W = vals.F * vals.s;
+                    return [
+                        `<strong>ขั้นที่ 1 ระบุข้อมูล:</strong> แรง (F) = ${vals.F} N, ระยะทาง (s) = ${vals.s} m`,
+                        `<strong>ขั้นที่ 2 เลือกใช้สมการ:</strong> W = F × s`,
+                        `<strong>ขั้นที่ 3 แทนค่า:</strong> W = ${vals.F} × ${vals.s}`,
+                        `<strong>ขั้นที่ 4 คำนวณคำตอบ:</strong> งานที่ทำได้ (W) = <span class="text-lg font-extrabold text-indigo-700">${W.toLocaleString()} จูล (J)</span>`
+                    ];
+                }
+            },
+            {
+                id: 'F_BUOYANCY', grade: 'M2', category: 'ฟิสิกส์ (แรงและของไหล)',
+                name: 'แรงพยุงของของเหลว (Archimedes Principle)',
+                formulaText: 'F_B = ρ × V × g',
+                description: 'แรงพยุง (Newton) ขึ้นอยู่กับความหนาแน่นของเหลว ปริมาตรส่วนที่จม และค่าความโน้มถ่วงโลก',
+                inputs: [
+                    { key: 'rho', label: 'ความหนาแน่นของเหลว (ρ)', unit: 'kg/m³ (น้ำ = 1000)', placeholder: '1000' },
+                    { key: 'V', label: 'ปริมาตรวัตถุส่วนที่จม (V)', unit: 'ลูกบาศก์เมตร (m³)', placeholder: '0.004' },
+                    { key: 'g', label: 'ความเร่งโน้มถ่วง (g)', unit: 'm/s² (ปกติ = 10)', placeholder: '10' }
+                ],
+                solve: (vals) => {
+                    const FB = vals.rho * vals.V * vals.g;
+                    return [
+                        `<strong>ขั้นที่ 1 ระบุข้อมูล:</strong> ρ = ${vals.rho} kg/m³, V_จม = ${vals.V} m³, g = ${vals.g} m/s²`,
+                        `<strong>ขั้นที่ 2 เลือกใช้สมการ:</strong> F_B = ρ × V_จม × g`,
+                        `<strong>ขั้นที่ 3 แทนค่า:</strong> F_B = ${vals.rho} × ${vals.V} × ${vals.g}`,
+                        `<strong>ขั้นที่ 4 คำนวณคำตอบ:</strong> แรงพยุง (F_B) = <span class="text-lg font-extrabold text-indigo-700">${FB.toLocaleString()} นิวตัน (N)</span>`
+                    ];
+                }
+            },
+            {
+                id: 'F_WAVE', grade: 'M3', category: 'ฟิสิกส์ (คลื่นและแสง)',
+                name: 'อัตราเร็วคลื่น (Wave Speed)',
+                formulaText: 'v = f × λ',
+                description: 'อัตราเร็วคลื่น (m/s) เท่ากับความถี่คลื่น (Hz) คูณกับความยาวคลื่น (m)',
+                inputs: [
+                    { key: 'f', label: 'ความถี่ของคลื่น (f)', unit: 'เฮิรตซ์ (Hz)', placeholder: 'เช่น 20' },
+                    { key: 'lambda', label: 'ความยาวคลื่น (λ)', unit: 'เมตร (m)', placeholder: 'เช่น 0.5' }
+                ],
+                solve: (vals) => {
+                    const v = vals.f * vals.lambda;
+                    return [
+                        `<strong>ขั้นที่ 1 ระบุข้อมูล:</strong> ความถี่ (f) = ${vals.f} Hz, ความยาวคลื่น (λ) = ${vals.lambda} m`,
+                        `<strong>ขั้นที่ 2 เลือกใช้สมการ:</strong> v = f × λ`,
+                        `<strong>ขั้นที่ 3 แทนค่า:</strong> v = ${vals.f} × ${vals.lambda}`,
+                        `<strong>ขั้นที่ 4 คำนวณคำตอบ:</strong> อัตราเร็วคลื่น (v) = <span class="text-lg font-extrabold text-indigo-700">${v.toLocaleString()} เมตร/วินาที (m/s)</span>`
+                    ];
+                }
+            },
+            {
+                id: 'F_CONC_WW', grade: 'M2', category: 'เคมี (สารละลาย)',
+                name: 'ความเข้มข้นสารละลาย ร้อยละโดยมวล (%w/w)',
+                formulaText: '%w/w = (มวลตัวละลาย / มวลสารละลาย) × 100',
+                description: 'หาความเข้มข้นของสารละลายในหน่วยร้อยละโดยมวลต่อมวล',
+                inputs: [
+                    { key: 'solute', label: 'มวลของตัวละลาย', unit: 'กรัม (g)', placeholder: 'เช่น 30' },
+                    { key: 'solution', label: 'มวลของสารละลายทั้งหมด', unit: 'กรัม (g)', placeholder: 'เช่น 200' }
+                ],
+                solve: (vals) => {
+                    const pct = (vals.solute / vals.solution) * 100;
+                    return [
+                        `<strong>ขั้นที่ 1 ระบุข้อมูล:</strong> มวลตัวละลาย = ${vals.solute} g, มวลสารละลายรวม = ${vals.solution} g`,
+                        `<strong>ขั้นที่ 2 เลือกใช้สมการ:</strong> %w/w = (มวลตัวละลาย ÷ มวลสารละลาย) × 100`,
+                        `<strong>ขั้นที่ 3 แทนค่า:</strong> %w/w = (${vals.solute} ÷ ${vals.solution}) × 100`,
+                        `<strong>ขั้นที่ 4 คำนวณคำตอบ:</strong> ความเข้มข้น = <span class="text-lg font-extrabold text-indigo-700">${pct.toFixed(2)} % โดยมวล (%w/w)</span>`
+                    ];
+                }
+            }
+        ];
+
+        // 3. ฐานข้อมูลแบบทดสอบ (10 ข้อ ครอบคลุม ม.2 และ ม.3 ทั้ง 5 หมวดวิชา)
+        const quizDatabase = [
+            {
+                id: 'Q1', grade: 'M2', category: 'ชีววิทยา',
+                question: 'การแลกเปลี่ยนแก๊สออกซิเจนและแก๊สคาร์บอนไดออกไซด์ในระบบหายใจของมนุษย์เกิดขึ้นที่โครงสร้างใด และใช้กระบวนการใด',
+                options: ['หลอดลม — การออสโมซิส', 'ถุงลมปอด — การแพร่', 'กระบังลม — การลำเลียงแบบใช้พลังงาน', 'ขั้วปอด — การกรอง'],
+                answerIndex: 1,
+                explanation: 'การแลกเปลี่ยนแก๊สเกิดขึ้นที่ถุงลมปอด (Alveoli) ที่มีผนังบางและมีหลอดเลือดฝอยล้อมรอบ โดยอาศัยหลักการแพร่จากบริเวณที่มีความเข้มข้นสูงไปต่ำ'
+            },
+            {
+                id: 'Q2', grade: 'M2', category: 'เคมี',
+                question: 'หากต้องการแยกน้ำบริสุทธิ์ออกจากน้ำทะเล ควรเลือกใช้วิธีการแยกสารใดจึงจะเหมาะสมที่สุด',
+                options: ['การกรอง', 'โครมาโทกราฟีแบบกระดาษ', 'การกลั่นอย่างง่าย', 'การใช้แม่เหล็กดูด'],
+                answerIndex: 2,
+                explanation: 'การกลั่นอย่างง่าย (Simple Distillation) ใช้แยกตัวทำละลาย (น้ำ) ออกจากตัวละลายที่มีจุดเดือดต่างกันมาก (เกลือ) โดยทำให้น้ำระเหยกลายเป็นไอแล้วควบแน่นกลับมาเป็นน้ำบริสุทธิ์'
+            },
+            {
+                id: 'Q3', grade: 'M2', category: 'ฟิสิกส์',
+                question: 'ชายคนหนึ่งออกแรงผลักตู้ด้วยแรง 100 นิวตัน แต่ตู้ไม่ขยับเลย งานทางวิทยาศาสตร์ที่ชายคนนี้ทำได้มีค่าเท่าใด',
+                options: ['0 จูล', '10 จูล', '100 จูล', 'ไม่สามารถหาค่าได้'],
+                answerIndex: 0,
+                explanation: 'จากสูตร W = F × s เมื่อตู้ไม่ขยับ ระยะทาง s = 0 เมตร ดังนั้นงานที่ทำได้ W = 100 × 0 = 0 จูล'
+            },
+            {
+                id: 'Q4', grade: 'M2', category: 'โลกและอวกาศ',
+                question: 'เชื้อเพลิงซากดึกดำบรรพ์ชนิดใดเกิดจากการทับถมของซากพืชในบริเวณที่ลุ่มชื้นแฉะเป็นเวลาหลายล้านปี',
+                options: ['น้ำมันดิบ', 'แก๊สธรรมชาติ', 'ถ่านหิน', 'หินปูน'],
+                answerIndex: 2,
+                explanation: 'ถ่านหิน (Coal) เกิดจากการทับถมและแปรสภาพของซากพืชโบราณภายใต้ความร้อนและความดันสูง ส่วนปิโตรเลียมเกิดจากซากพืชและซากสัตว์ทะเลขนาดเล็ก'
+            },
+            {
+                id: 'Q5', grade: 'M2', category: 'เทคโนโลยี',
+                question: 'ข้อใดเรียงลำดับกระบวนการออกแบบเชิงวิศวกรรมในขั้นเริ่มต้นได้อย่างถูกต้อง',
+                options: ['ออกแบบวิธีการ → ระบุปัญหา → ทดสอบ', 'ระบุปัญหา → รวบรวมข้อมูลและแนวคิด → ออกแบบวิธีการแก้ปัญหา', 'สร้างชิ้นงาน → ระบุปัญหา → ประเมินผล', 'ทดสอบ → รวบรวมข้อมูล → นำเสนอ'],
+                answerIndex: 1,
+                explanation: 'กระบวนการออกแบบเชิงวิศวกรรมเริ่มต้นด้วยการ 1. ระบุปัญหา 2. รวบรวมข้อมูลและแนวคิดที่เกี่ยวข้อง 3. ออกแบบวิธีการแก้ปัญหา 4. วางแผนและดำเนินการ 5. ทดสอบประเมินผล 6. นำเสนอ'
+            },
+            {
+                id: 'Q6', grade: 'M3', category: 'ชีววิทยา',
+                question: 'การแบ่งเซลล์แบบใดที่ทำให้เซลล์ลูกมีจำนวนโครโมโซมลดลงเหลือครึ่งหนึ่ง (n) เพื่อสร้างเซลล์สืบพันธุ์',
+                options: ['ไมโทซิส (Mitosis)', 'ไมโอซิส (Meiosis)', 'การแตกหน่อ (Budding)', 'การงอกใหม่ (Regeneration)'],
+                answerIndex: 1,
+                explanation: 'การแบ่งเซลล์แบบไมโอซิส (Meiosis) เป็นการแบ่งเซลล์เพื่อสร้างเซลล์สืบพันธุ์ (อสุจิและเซลล์ไข่) ได้เซลล์ใหม่ 4 เซลล์ที่มีโครโมโซมลดลงครึ่งหนึ่ง (Haploid, n)'
+            },
+            {
+                id: 'Q7', grade: 'M3', category: 'ฟิสิกส์',
+                question: 'ตัวต้านทานขนาด 5 โอห์ม และ 10 โอห์ม นำมาต่อกันแบบอนุกรม ความต้านทานรวมของวงจรนี้มีค่าเท่าใด',
+                options: ['3.33 โอห์ม', '5 โอห์ม', '15 โอห์ม', '50 โอห์ม'],
+                answerIndex: 2,
+                explanation: 'การต่อตัวต้านทานแบบอนุกรม ให้นำค่าความต้านทานมาบวกกันโดยตรง: R_รวม = R₁ + R₂ = 5 + 10 = 15 โอห์ม'
+            },
+            {
+                id: 'Q8', grade: 'M3', category: 'เคมี',
+                question: 'เมื่อนำสารละลายกรดไฮโดรคลอริก (HCl) ทำปฏิกิริยากับสารละลายโซเดียมไฮดรอกไซด์ (NaOH) จะเกิดปฏิกิริยาใดและได้ผลิตภัณฑ์อะไร',
+                options: ['ปฏิกิริยาการเผาไหม้ ได้แก๊สคาร์บอนไดออกไซด์', 'ปฏิกิริยาสะเทิน ได้เกลือและน้ำ', 'ปฏิกิริยาการเกิดสนิม ได้ออกไซด์ของโลหะ', 'ปฏิกิริยาพอลิเมอไรเซชัน ได้พลาสติก'],
+                answerIndex: 1,
+                explanation: 'กรด + เบส จะเกิดปฏิกิริยาสะเทิน (Neutralization) ได้ผลิตภัณฑ์เป็น เกลือ (NaCl) และ น้ำ (H₂O)'
+            },
+            {
+                id: 'Q9', grade: 'M3', category: 'โลกและอวกาศ',
+                question: 'ปรากฏการณ์สุริยุปราคาเกิดขึ้นเมื่อตำแหน่งของวัตถุท้องฟ้าเรียงตัวกันอย่างไร',
+                options: ['ดวงอาทิตย์ — โลก — ดวงจันทร์', 'ดวงอาทิตย์ — ดวงจันทร์ — โลก', 'โลก — ดวงอาทิตย์ — ดวงจันทร์', 'ดวงจันทร์ — ดวงอาทิตย์ — โลก'],
+                answerIndex: 1,
+                explanation: 'สุริยุปราคาเกิดขึ้นในวันขึ้น 15 ค่ำ หรือแรม 15 ค่ำ (วันเดือนดับ) เมื่อดวงจันทร์โคจรมาอยู่ตรงกลางระหว่างดวงอาทิตย์กับโลก ทำให้เงาของดวงจันทร์ทอดลงบนพื้นโลก'
+            },
+            {
+                id: 'Q10', grade: 'M3', category: 'เทคโนโลยี',
+                question: 'แนวคิดใดในวิทยาการคำนวณที่หมายถึง "การคัดแยกคุณลักษณะที่สำคัญออกจากรายละเอียดปลีกย่อยที่ไม่จำเป็น"',
+                options: ['การแบ่งย่อยปัญหา (Decomposition)', 'การหารูปแบบ (Pattern Recognition)', 'การคิดเชิงนามธรรม (Abstraction)', 'การออกแบบอัลกอริทึม (Algorithm Design)'],
+                answerIndex: 2,
+                explanation: 'การคิดเชิงนามธรรม (Abstraction) คือการมุ่งเน้นเฉพาะสาระสำคัญของปัญหาและตัดรายละเอียดที่ไม่จำเป็นออกไป เพื่อให้แก้ปัญหาได้ง่ายขึ้น'
+            }
+        ];
+
+        // สถานะตัวกรองปัจจุบัน
+        let currentGradeFilter = 'ALL';
+        let currentCategoryFilter = 'ALL';
+        let currentSearchKeyword = '';
+        let currentActiveLesson = null;
+        let uploadedImageBase64 = null;
+        let uploadedImageMimeType = null;
+
+        // ฟังก์ชันแสดงข้อความแจ้งเตือน (แทน alert)
+        function showToast(msg) {
+            const toast = document.getElementById('toast-box');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+
+        // สลับแท็บหลัก
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-indigo-700', 'shadow-sm');
+                btn.classList.add('text-white', 'hover:bg-white/20');
+            });
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            activeBtn.classList.remove('text-white', 'hover:bg-white/20');
+            activeBtn.classList.add('bg-white', 'text-indigo-700', 'shadow-sm');
+        }
+
+        // ตัวกรองระดับชั้น ม.2 / ม.3
+        function setGradeFilter(grade) {
+            currentGradeFilter = grade;
+            document.querySelectorAll('.grade-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById(`grade-${grade}`);
+            activeBtn.classList.remove('text-slate-600');
+            activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+
+            renderLessons();
+            renderFormulas();
+        }
+
+        // ตัวกรองหมวดหมู่ 5 สาขา
+        function setCategoryFilter(cat) {
+            currentCategoryFilter = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-700');
+            });
+            const activeBtn = document.querySelector(`.cat-pill[data-cat="${cat}"]`);
+            activeBtn.classList.remove('bg-white', 'text-slate-700');
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+
+            renderLessons();
+        }
+
+        // ค้นหาด่วนทั่วทั้งแอป
+        function handleGlobalSearch() {
+            currentSearchKeyword = document.getElementById('globalSearchInput').value.toLowerCase().trim();
+            renderLessons();
+            renderFormulas();
+        }
+
+        // แสดงผลการ์ดบทเรียน
+        function renderLessons() {
+            const container = document.getElementById('lessons-grid');
+            const filtered = lessonsDatabase.filter(item => {
+                const matchGrade = currentGradeFilter === 'ALL' || item.grade === currentGradeFilter;
+                const matchCat = currentCategoryFilter === 'ALL' || item.category === currentCategoryFilter;
+                const matchSearch = !currentSearchKeyword ||
+                    item.title.toLowerCase().includes(currentSearchKeyword) ||
+                    item.summary.toLowerCase().includes(currentSearchKeyword) ||
+                    item.topics.some(t => t.toLowerCase().includes(currentSearchKeyword));
+                return matchGrade && matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500">ไม่พบบทเรียนที่ตรงกับเงื่อนไขการค้นหา ลองเปลี่ยนคำค้นหาหรือตัวกรองระดับชั้นนะครับ</div>`;
+                return;
+            }
+
+            const catColors = {
+                physics: 'bg-blue-100 text-blue-700 border-blue-200',
+                chemistry: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+                biology: 'bg-rose-100 text-rose-700 border-rose-200',
+                earth: 'bg-amber-100 text-amber-700 border-amber-200',
+                tech: 'bg-purple-100 text-purple-700 border-purple-200'
+            };
+
+            container.innerHTML = filtered.map(lesson => `
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md hover:border-indigo-300 transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-full border ${catColors[lesson.category]}">${lesson.catName}</span>
+                            <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-slate-800 text-white">${lesson.grade === 'M2' ? 'ม.2' : 'ม.3'}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-800 mb-2">${lesson.title}</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-4">${lesson.summary}</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] text-slate-400"><i class="fa-solid fa-list-check mr-1"></i>${lesson.topics.length} หัวข้อหลัก + ตัวอย่างโจทย์</span>
+                        <button onclick="openLessonModal('${lesson.id}')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-xl transition">
+                            อ่านเนื้อหา & เฉลย <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // เปิดหน้าต่างรายละเอียดบทเรียน
+        function openLessonModal(lessonId) {
+            const lesson = lessonsDatabase.find(l => l.id === lessonId);
+            if (!lesson) return;
+            currentActiveLesson = lesson;
+
+            document.getElementById('modal-badge').textContent = `${lesson.grade === 'M2' ? 'มัธยมศึกษาปีที่ 2' : 'มัธยมศึกษาปีที่ 3'} • หมวด${lesson.catName}`;
+            document.getElementById('modal-title').textContent = lesson.title;
+            
+            document.getElementById('modal-body').innerHTML = `
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-bookmark text-indigo-600"></i> สรุปสาระสำคัญประจำบทเรียน
+                    </h4>
+                    <ul class="space-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        ${lesson.topics.map(t => `<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1 text-xs"></i><span>${t}</span></li>`).join('')}
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-amber-500"></i> ตัวอย่างโจทย์พร้อมเฉลยละเอียด
+                    </h4>
+                    <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-3">
+                        <p class="font-semibold text-slate-800"><strong>โจทย์:</strong> ${lesson.exampleProblem.question}</p>
+                        <div class="bg-white p-3.5 rounded-xl border border-amber-100 text-slate-700 whitespace-pre-line leading-relaxed">
+                            ${lesson.exampleProblem.solution}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('lesson-modal').classList.remove('hidden');
+        }
+
+        function closeLessonModal() {
+            document.getElementById('lesson-modal').classList.add('hidden');
+        }
+
+        function askAIAboutCurrentLesson() {
+            if (!currentActiveLesson) return;
+            closeLessonModal();
+            switchTab('ai');
+            askQuickQuestion(`ช่วยอธิบายสรุปบทเรียนเรื่อง "${currentActiveLesson.title}" (${currentActiveLesson.grade === 'M2' ? 'ม.2' : 'ม.3'}) แบบเข้าใจง่าย พร้อมยกตัวอย่างเพิ่มเติมอีก 1 ข้อ`);
+        }
+
+        // แสดงผลรายการสูตรสมการ
+        function renderFormulas() {
+            const container = document.getElementById('formulas-list');
+            const filtered = formulasDatabase.filter(f => {
+                const matchGrade = currentGradeFilter === 'ALL' || f.grade === currentGradeFilter;
+                const matchSearch = !currentSearchKeyword ||
+                    f.name.toLowerCase().includes(currentSearchKeyword) ||
+                    f.formulaText.toLowerCase().includes(currentSearchKeyword) ||
+                    f.description.toLowerCase().includes(currentSearchKeyword);
+                return matchGrade && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">ไม่พบสูตรคำนวณที่ค้นหา</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(f => `
+                <div class="p-4 rounded-2xl border border-slate-200 hover:border-indigo-300 bg-slate-50/50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">${f.grade === 'M2' ? 'ม.2' : 'ม.3'}</span>
+                            <span class="text-xs font-semibold text-slate-500">${f.category}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">${f.name}</h4>
+                        <div class="my-1.5 inline-block bg-white px-3 py-1 rounded-lg border border-slate-200 formula-font font-bold text-indigo-700 text-base">
+                            ${f.formulaText}
+                        </div>
+                        <p class="text-xs text-slate-600">${f.description}</p>
+                    </div>
+                    <button onclick="selectFormulaInCalculator('${f.id}')" class="self-start sm:self-center whitespace-nowrap bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-sm transition">
+                        <i class="fa-solid fa-calculator mr-1"></i> ทดลองคำนวณ
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // ตั้งค่าตัวเลือกในเครื่องคำนวณ
+        function initCalculatorSelect() {
+            const select = document.getElementById('calc-formula-select');
+            select.innerHTML = formulasDatabase.map(f => `<option value="${f.id}">[${f.grade === 'M2' ? 'ม.2' : 'ม.3'}] ${f.name} (${f.formulaText})</option>`).join('');
+            renderCalculatorInputs();
+        }
+
+        function selectFormulaInCalculator(formulaId) {
+            document.getElementById('calc-formula-select').value = formulaId;
+            renderCalculatorInputs();
+            document.getElementById('calc-result-box').classList.add('hidden');
+            showToast('โหลดสูตรเข้าสู่เครื่องคำนวณแล้ว กรอกตัวเลขเพื่อคำนวณได้เลย');
+        }
+
+        function renderCalculatorInputs() {
+            const formulaId = document.getElementById('calc-formula-select').value;
+            const formula = formulasDatabase.find(f => f.id === formulaId);
+            if (!formula) return;
+
+            const container = document.getElementById('calc-inputs-container');
+            container.innerHTML = formula.inputs.map(inp => `
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">${inp.label} <span class="text-slate-400 font-normal">[${inp.unit}]</span></label>
+                    <input type="number" step="any" id="calc-inp-${inp.key}" placeholder="${inp.placeholder}" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+            `).join('');
+        }
+
+        function executeStepByStepCalculation() {
+            const formulaId = document.getElementById('calc-formula-select').value;
+            const formula = formulasDatabase.find(f => f.id === formulaId);
+            if (!formula) return;
+
+            const vals = {};
+            for (const inp of formula.inputs) {
+                const raw = document.getElementById(`calc-inp-${inp.key}`).value;
+                if (raw === '' || isNaN(parseFloat(raw))) {
+                    showToast(`กรุณากรอกค่าตัวแปร "${inp.label}" ให้ครบถ้วน`);
+                    return;
+                }
+                vals[inp.key] = parseFloat(raw);
+            }
+
+            const steps = formula.solve(vals);
+            const resultBox = document.getElementById('calc-result-box');
+            resultBox.innerHTML = `
+                <div class="font-bold text-emerald-800 border-b border-emerald-200 pb-1.5 mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-check-circle"></i> ลำดับขั้นตอนการคำนวณ:
+                </div>
+                <div class="space-y-2 text-slate-700">
+                    ${steps.map(s => `<div class="bg-white/80 p-2.5 rounded-lg border border-emerald-100">${s}</div>`).join('')}
+                </div>
+            `;
+            resultBox.classList.remove('hidden');
+        }
+
+        // ==================== ระบบ AI ถาม-ตอบ & วิเคราะห์รูปภาพโจทย์ ====================
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                uploadedImageMimeType = file.type || 'image/png';
+                uploadedImageBase64 = dataUrl.split(',')[1];
+
+                const preview = document.getElementById('image-preview');
+                preview.src = dataUrl;
+                preview.classList.remove('hidden');
+                document.getElementById('image-upload-placeholder').classList.add('hidden');
+                document.getElementById('image-actions').classList.remove('hidden');
+                showToast('อัปโหลดภาพโจทย์เรียบร้อย กดปุ่ม "วิเคราะห์โจทย์ในภาพ" ได้เลย');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearUploadedImage() {
+            uploadedImageBase64 = null;
+            uploadedImageMimeType = null;
+            document.getElementById('problem-image-input').value = '';
+            document.getElementById('image-preview').classList.add('hidden');
+            document.getElementById('image-upload-placeholder').classList.remove('hidden');
+            document.getElementById('image-actions').classList.add('hidden');
+        }
+
+        function appendChatMessage(sender, htmlContent, imageSrc = null) {
+            const container = document.getElementById('ai-chat-messages');
+            const wrapper = document.createElement('div');
+            
+            if (sender === 'user') {
+                wrapper.className = 'flex items-start justify-end gap-3';
+                wrapper.innerHTML = `
+                    <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none p-3.5 text-sm shadow-sm max-w-[85%] space-y-2">
+                        ${imageSrc ? `<img src="${imageSrc}" class="max-h-48 rounded-xl border border-indigo-400 mb-2">` : ''}
+                        <div>${htmlContent}</div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                        คุณ
+                    </div>
+                `;
+            } else {
+                wrapper.className = 'flex items-start gap-3';
+                wrapper.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 text-xs">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-3.5 text-sm text-slate-700 shadow-sm max-w-[85%] leading-relaxed whitespace-pre-line">
+                        ${htmlContent}
+                    </div>
+                `;
+            }
+            container.appendChild(wrapper);
+            container.scrollTop = container.scrollHeight;
+            return wrapper;
+        }
+
+        function resetChat() {
+            document.getElementById('ai-chat-messages').innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 text-xs">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-3.5 text-sm text-slate-700 shadow-sm max-w-[85%]">
+                        เริ่มการสนทนาใหม่เรียบร้อยครับ! มีข้อสงสัยเรื่องไหนในวิชาวิทยาศาสตร์ ม.2–ม.3 ถามได้เลยครับ
+                    </div>
+                </div>
+            `;
+        }
+
+        function askQuickQuestion(text) {
+            document.getElementById('ai-chat-input').value = text;
+            handleChatSubmit(new Event('submit'));
+        }
+
+        function analyzeImageWithAI() {
+            if (!uploadedImageBase64) return;
+            const previewSrc = document.getElementById('image-preview').src;
+            const userPrompt = document.getElementById('ai-chat-input').value.trim() || 'ช่วยอ่านโจทย์วิทยาศาสตร์จากรูปภาพนี้ ระบุสูตรที่เกี่ยวข้อง และแสดงวิธีทำทีละขั้นตอนอย่างละเอียดพร้อมสรุปคำตอบ';
+            document.getElementById('ai-chat-input').value = '';
+            
+            appendChatMessage('user', userPrompt, previewSrc);
+            callGeminiAI(userPrompt, uploadedImageBase64, uploadedImageMimeType);
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('ai-chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            appendChatMessage('user', text);
+            callGeminiAI(text, null, null);
+        }
+
+        // เรียกใช้ Gemini API พร้อมระบบ Fallback ตอบจากฐานข้อมูลภายในกรณีไม่มีการเชื่อมต่อ API
+        async function callGeminiAI(promptText, base64Img, mimeType) {
+            const loadingNode = appendChatMessage('ai', '<i class="fa-solid fa-spinner fa-spin mr-2 text-indigo-600"></i>กำลังวิเคราะห์คำถามและค้นหาข้อมูลจากหลักสูตร ม.2–ม.3...');
+            
+            const systemInstruction = `คุณคือติวเตอร์วิชาวิทยาศาสตร์และเทคโนโลยี ระดับชั้นมัธยมศึกษาปีที่ 2 และ ม.3 (SCIENCE MASTER M.2-M.3) ครอบคลุม 5 หมวด: 1.ฟิสิกส์ 2.เคมี 3.ชีววิทยา 4.โลกและอวกาศ 5.เทคโนโลยี ตอบคำถามเป็นภาษาไทยที่เข้าใจง่าย เป็นกันเอง ถูกต้องตามหลักวิชาการ หากเป็นโจทย์คำนวณให้แสดงสูตรที่ใช้ แทนค่า และแสดงวิธีทำทีละขั้นตอนอย่างชัดเจน`;
+
+            const parts = [{ text: promptText }];
+            if (base64Img && mimeType) {
+                parts.push({
+                    inlineData: {
+                        mimeType: mimeType,
+                        data: base64Img
+                    }
+                });
+            }
+
+            const payload = {
+                contents: [{ role: 'user', parts: parts }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            let delay = 1000;
+            for (let attempt = 0; attempt < 3; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const result = await response.json();
+                    const replyText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (replyText) {
+                        // จัดรูปแบบตัวหนา markdown เบื้องต้นให้อ่านง่าย
+                        const formatted = replyText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        loadingNode.querySelector('.bg-white').innerHTML = formatted;
+                        return;
+                    }
+                } catch (err) {
+                    if (attempt < 2) {
+                        await new Promise(r => setTimeout(r, delay));
+                        delay *= 2;
+                    }
+                }
+            }
+
+            // กรณีเรียก API ไม่สำเร็จ (เช่น เปิดแบบออฟไลน์) ให้ค้นหาคำตอบจากฐานข้อมูลในแอปแทน
+            const localMatch = lessonsDatabase.find(l =>
+                promptText.toLowerCase().includes(l.catName) ||
+                l.topics.some(t => promptText.toLowerCase().includes(t.substring(0, 10).toLowerCase()))
+            ) || lessonsDatabase[0];
+
+            loadingNode.querySelector('.bg-white').innerHTML = `
+                <strong>[ข้อมูลอ้างอิงจากฐานข้อมูลบทเรียน SCIENCE MASTER]</strong><br>
+                หัวข้อที่เกี่ยวข้อง: <strong>${localMatch.title}</strong> (${localMatch.grade === 'M2' ? 'ม.2' : 'ม.3'})<br><br>
+                • ${localMatch.topics.join('<br>• ')}<br><br>
+                <em>ตัวอย่างโจทย์:</em> ${localMatch.exampleProblem.question}<br>
+                ${localMatch.exampleProblem.solution}
+            `;
+        }
+
+        // ==================== ระบบแบบทดสอบพร้อมตรวจคะแนน ====================
+        let activeQuizQuestions = [];
+
+        function initQuiz() {
+            const filter = document.getElementById('quiz-filter-select').value;
+            activeQuizQuestions = quizDatabase.filter(q => filter === 'ALL' || q.grade === filter);
+            
+            document.getElementById('quiz-score-banner').classList.add('hidden');
+            const submitBtn = document.getElementById('submit-quiz-btn');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = activeQuizQuestions.map((q, idx) => `
+                <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/40" id="quiz-card-${q.id}">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-indigo-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-lg">ข้อที่ ${idx + 1}</span>
+                        <span class="text-xs font-bold text-slate-500">${q.grade === 'M2' ? 'ม.2' : 'ม.3'} • ${q.category}</span>
+                    </div>
+                    <p class="font-bold text-slate-800 text-sm mb-3">${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, optIdx) => `
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white hover:bg-indigo-50/50 cursor-pointer transition text-sm">
+                                <input type="radio" name="quiz_${q.id}" value="${optIdx}" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="quiz-exp-${q.id}" class="hidden mt-3 p-3.5 rounded-xl text-xs leading-relaxed"></div>
+                </div>
+            `).join('');
+        }
+
+        function gradeQuiz() {
+            let score = 0;
+            let answeredCount = 0;
+
+            activeQuizQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="quiz_${q.id}"]:checked`);
+                if (selected) answeredCount++;
+            });
+
+            if (answeredCount < activeQuizQuestions.length) {
+                showToast(`กรุณาทำข้อสอบให้ครบทั้ง ${activeQuizQuestions.length} ข้อก่อนส่งคำตอบครับ (ทำแล้ว ${answeredCount}/${activeQuizQuestions.length} ข้อ)`);
+                return;
+            }
+
+            activeQuizQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="quiz_${q.id}"]:checked`);
+                const userAns = parseInt(selected.value, 10);
+                const expBox = document.getElementById(`quiz-exp-${q.id}`);
+                const card = document.getElementById(`quiz-card-${q.id}`);
+
+                expBox.classList.remove('hidden');
+                if (userAns === q.answerIndex) {
+                    score++;
+                    card.classList.add('border-emerald-300', 'bg-emerald-50/30');
+                    expBox.className = 'mt-3 p-3.5 rounded-xl text-xs leading-relaxed bg-emerald-100 text-emerald-900 border border-emerald-200';
+                    expBox.innerHTML = `<strong><i class="fa-solid fa-circle-check mr-1"></i>ถูกต้อง!</strong> ${q.explanation}`;
+                } else {
+                    card.classList.add('border-rose-300', 'bg-rose-50/30');
+                    expBox.className = 'mt-3 p-3.5 rounded-xl text-xs leading-relaxed bg-rose-100 text-rose-900 border border-rose-200';
+                    expBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark mr-1"></i>ยังไม่ถูกต้อง (คำตอบที่ถูกคือ: ${q.options[q.answerIndex]})</strong><br>${q.explanation}`;
+                }
+            });
+
+            document.getElementById('quiz-score-number').textContent = score;
+            document.getElementById('quiz-total-number').textContent = activeQuizQuestions.length;
+            
+            const pct = (score / activeQuizQuestions.length) * 100;
+            document.getElementById('quiz-feedback-text').textContent = pct >= 80
+                ? 'ยอดเยี่ยมมาก! คุณมีความเข้าใจเนื้อหาวิทยาศาสตร์ ม.2–ม.3 ในระดับดีเยี่ยม'
+                : pct >= 50
+                ? 'ทำได้ดี! ลองทบทวนเฉลยข้อที่ผิดด้านล่างเพื่อเพิ่มความแม่นยำนะครับ'
+                : 'สู้ๆ นะครับ! แนะนำให้กลับไปทบทวนบทเรียนและสูตรคำนวณแล้วลองทำใหม่อีกครั้ง';
+
+            const banner = document.getElementById('quiz-score-banner');
+            banner.classList.remove('hidden');
+            banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const submitBtn = document.getElementById('submit-quiz-btn');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        // เริ่มต้นการทำงานเมื่อโหลดหน้าเว็บเสร็จ
+        window.onload = function() {
+            renderLessons();
+            renderFormulas();
+            initCalculatorSelect();
+            initQuiz();
+        };
+    </script>
+</body>
+</html>
